@@ -6,3 +6,9 @@ Created on Sep 29, 2012
 
 from sorter import *
 
+if __name__ == '__main__':
+    pass
+
+
+
+

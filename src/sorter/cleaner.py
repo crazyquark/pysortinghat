@@ -6,6 +6,8 @@ Created on Sep 30, 2012
 
 import os
 import shutil
+import glob
+
 import unrar
 
 from config import Config
@@ -39,6 +41,7 @@ class Cleaner:
             # Probably not a movie file, leave it alone
             return
         
+        # Get only the filename
         dname = os.path.basename(fname)
         
         # Make directory
@@ -49,4 +52,5 @@ class Cleaner:
         
     def processDir(self, dname):
         ''' Un-archive files, make nice '''
-        pass
+        for rarfile in glob.glob(dname + os.sep + '*.rar'):
+            pass

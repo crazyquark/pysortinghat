@@ -14,3 +14,5 @@ class Config:
         self.MoviesDir = moviesDir
         self.TvDir = tvDir
         
+        # Known movie extensions
+        self.MovieExtensions = ['.mp4', '.avi', '.mkv']

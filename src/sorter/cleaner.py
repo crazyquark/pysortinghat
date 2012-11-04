@@ -48,7 +48,9 @@ class Cleaner:
         os.mkdir(self.TargetDir + os.sep + dname)
         
         # Move file to directory
-        shutil.move(fname, self.TargetDir + os.sep + dname)
+        target = self.TargetDir + os.sep + dname
+        shutil.move(fname, target)
+        print 'Moved ',fname, 'to ', target
         
     def processDir(self, dname):
         ''' Un-archive files, make nice '''

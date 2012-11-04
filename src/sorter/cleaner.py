@@ -5,6 +5,7 @@ Created on Sep 30, 2012
 '''
 
 import os
+import shutil
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
@@ -23,4 +24,11 @@ class Cleaner:
                 self.processDir(fname)
      
     def processFile(self, fname):
-        ''' Make a directory for orphan .AVIs '''      
+        ''' Make a directory for orphan .AVIs '''
+        dname = os.path.basename(fname)
+        
+        # Make directory
+        os.mkdir(self.TargetDir + os.sep + dname)
+        
+        # Move file to directory
+        shutil.move(fname, self.TargetDir + os.sep + dname)      

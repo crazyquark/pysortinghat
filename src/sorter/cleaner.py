@@ -56,6 +56,10 @@ class Cleaner:
         ''' Un-archive files, make nice '''
         for rarfilename in glob.glob(dname + os.sep + '*.rar'):
             if unrar.rarfile.is_rarfile(rarfilename):
+                # extract
                 rarfile = unrar.rarfile.RarFile(rarfilename)
                 rarfile.extractall()
+                
+                # delete
+                os.remove(rarfilename)
                 

@@ -54,5 +54,8 @@ class Cleaner:
         
     def processDir(self, dname):
         ''' Un-archive files, make nice '''
-        for rarfile in glob.glob(dname + os.sep + '*.rar'):
-            pass
+        for rarfilename in glob.glob(dname + os.sep + '*.rar'):
+            if unrar.rarfile.is_rarfile(rarfilename):
+                rarfile = unrar.rarfile.RarFile(rarfilename)
+                rarfile.extractall()
+                

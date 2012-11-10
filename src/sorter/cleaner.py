@@ -8,22 +8,22 @@ import os
 import shutil
 import glob
 
-import unrar
+import unrar.rarfile
 
 from config import Config
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
     ''' Use unrar lib from https://github.com/matiasb/python-unrar '''
-    def __init__(self, targetDir = 'G:\\Movies'):
-        self.TargetDir = targetDir
+    def __init__(self, config):
+        self.ConfigObj = config
         
     def clean(self):
         ''' Time to clean! '''
-        filelist = os.listdir(self.TargetDir)
+        filelist = os.listdir(self.ConfigObj.MoviesDir)
         
         for fname in filelist:
-            filepath = os.path.join(self.TargetDir, fname)
+            filepath = os.path.join(self.ConfigObj.MoviesDir, fname)
             if os.path.isfile(filepath):
                 self.processFile(fname)
             elif os.path.isdir(filepath):
@@ -32,7 +32,7 @@ class Cleaner:
     def processFile(self, fname):
         ''' Make a directory for orphan .AVIs '''
         isMovie = False
-        for ext in Config.MovieExtensions:
+        for ext in self.ConfigObj.MovieExtensions:
             if (fname.endswith(ext)):
                 isMovie = True
                 break
@@ -42,24 +42,29 @@ class Cleaner:
             return
         
         # Get only the filename
-        dname = os.path.basename(fname)
+        dname = os.path.splitext(fname)[0]
         
         # Make directory
-        os.mkdir(self.TargetDir + os.sep + dname)
+        target = self.ConfigObj.MoviesDir + os.sep + dname
+        if not os.path.exists(target):
+            os.mkdir(self.ConfigObj.MoviesDir + os.sep + dname)
         
         # Move file to directory
-        target = self.TargetDir + os.sep + dname
-        shutil.move(fname, target)
+        source = self.ConfigObj.MoviesDir + os.sep + fname
+        shutil.move(source, target)
         print 'Moved ',fname, 'to ', target
         
     def processDir(self, dname):
         ''' Un-archive files, make nice '''
-        for rarfilename in glob.glob(dname + os.sep + '*.rar'):
+        crtDir = self.ConfigObj.MoviesDir + os.sep + dname
+        targetPattern = crtDir + os.sep + '*.rar'
+        for rarfilename in glob.glob(targetPattern):
             if unrar.rarfile.is_rarfile(rarfilename):
+                print 'Found rarfile', rarfilename, ": extracting!"
                 # extract
                 rarfile = unrar.rarfile.RarFile(rarfilename)
-                rarfile.extractall()
+                rarfile.extractall(crtDir)
                 
                 # delete
-                os.remove(rarfilename)
+                #os.remove(rarfilename)
                 

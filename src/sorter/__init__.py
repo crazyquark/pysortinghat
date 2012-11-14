@@ -1,1 +1,1 @@
-print 'Loaded sorter module!'
+print 'Sorter module reporting for duty!'

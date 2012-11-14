@@ -58,13 +58,19 @@ class Cleaner:
         ''' Un-archive files, make nice '''
         crtDir = self.ConfigObj.MoviesDir + os.sep + dname
         targetPattern = crtDir + os.sep + '*.rar'
+        cleanPattern = crtDir + os.sep + '*.r[0-9][0-9]'
         for rarfilename in glob.glob(targetPattern):
             if unrar.rarfile.is_rarfile(rarfilename):
                 print 'Found rarfile', rarfilename, ": extracting!"
                 # extract
                 rarfile = unrar.rarfile.RarFile(rarfilename)
                 rarfile.extractall(crtDir)
-                
+                print 'Done!'
+                print 'Deleting ', rarfilename
+                #os.remove(rarfilename)
+        # Delete all .rXX files
+        for rarfilename in glob.glob(cleanPattern):
                 # delete
+                print 'Deleting ', rarfilename
                 #os.remove(rarfilename)
                 

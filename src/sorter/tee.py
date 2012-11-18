@@ -9,7 +9,6 @@ class Tee:
     Redirect stdout and stderr to log files, like tee in bash
     '''
 
-
     def __init__(self, fd1, fd2):
         '''
         Save file descriptors
@@ -33,5 +32,8 @@ class Tee:
         self.fd2.flush()
         
     def __del__(self):
+        '''
+        Close file descriptors when done
+        '''
         self.fd1.close()
         self.fd2.close()

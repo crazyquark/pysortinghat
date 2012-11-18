@@ -24,4 +24,15 @@ class SortingEngine:
                 self.analyzeDir(filepath)
 
     def analyzeDir(self, dirpath):
-        pass
+        '''
+        Analyze directory name
+        '''
+        print 'Analyzing ', dirpath
+        
+        # Get dir name only
+        dname = os.path.splitext(dirpath)[0]
+        
+        # Match against tv episodes regex
+        match = self.ConfigObj.TvEpsRegex.match(dname)
+        if match:
+            print 'Found TV content: ', dname

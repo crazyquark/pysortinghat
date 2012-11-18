@@ -7,10 +7,11 @@ Created on Sep 30, 2012
 import os
 import shutil
 import glob
+import re
 
 import unrar.rarfile
 
-from config import Config
+from termcolor import cprint
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
@@ -18,7 +19,7 @@ class Cleaner:
     def __init__(self, config):
         self.ConfigObj = config
         
-    def clean(self):
+    def clean_target(self):
         ''' Time to clean! '''
         filelist = os.listdir(self.ConfigObj.MoviesDir)
         
@@ -57,20 +58,58 @@ class Cleaner:
     def processDir(self, dname):
         ''' Un-archive files, make nice '''
         crtDir = self.ConfigObj.MoviesDir + os.sep + dname
-        targetPattern = crtDir + os.sep + '*.rar'
-        cleanPattern = crtDir + os.sep + '*.r[0-9][0-9]'
+        cprint('Processing ' + crtDir, 'green')
+        
+        # Search for rar files
+        targetPattern = re.escape(crtDir) + os.sep + '*.rar'
+        if self.ConfigObj.Debug:
+            print 'Pattern: ', targetPattern
+        
+        cleanPattern = re.escape(crtDir) + os.sep + '*.r[0-9][0-9]'
         for rarfilename in glob.glob(targetPattern):
             if unrar.rarfile.is_rarfile(rarfilename):
-                print 'Found rarfile', rarfilename, ": extracting!"
+                print 'Found rarfile', rarfilename
+                print 'Extracting ...',
                 # extract
                 rarfile = unrar.rarfile.RarFile(rarfilename)
                 rarfile.extractall(crtDir)
-                print 'Done!'
+                print 'done!'
                 print 'Deleting ', rarfilename
-                #os.remove(rarfilename)
+                os.remove(rarfilename)
+                
         # Delete all .rXX files
         for rarfilename in glob.glob(cleanPattern):
                 # delete
                 print 'Deleting ', rarfilename
-                #os.remove(rarfilename)
-                
+                os.remove(rarfilename)
+        
+        # Process subs if they exists        
+        subsDir = crtDir + os.sep + 'Subs'
+        if (os.path.exists(subsDir)):
+            # Need to process subs as well
+            print 'Processing subtitles dir'
+            subsRarPattern = re.escape(subsDir) + os.sep + '*.rar'
+            for subsRarfilename in glob.glob(subsRarPattern):
+                # Extract subtitles
+                if unrar.rarfile.is_rarfile(subsRarfilename):
+                    print 'Extracting ', subsRarfilename, '...',
+                    subsRarfile = unrar.rarfile.RarFile(subsRarfilename)
+                    subsRarfile.extractall(crtDir)
+                    print 'done!'
+                    #Remove it
+                    print 'Deleting ', subsRarfilename
+                    os.remove(subsRarfilename)
+                    
+                    # Extract idx if it exists
+                    for idxRarfilename in glob.glob(subsRarfilename):
+                        if unrar.rarfile.is_rarfile(idxRarfilename):
+                            print 'Extracting ', idxRarfilename, '...',
+                            idxRarfile = unrar.rarfile.RarFile(idxRarfilename)
+                            idxRarfile.extractall(crtDir)
+                            print 'done!'
+                            # Remove it
+                            os.remove(idxRarfilename)
+            
+            # Delete subs dir
+            print 'Deleting ', subsDir
+            shutil.rmtree(subsDir)

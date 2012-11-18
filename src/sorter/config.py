@@ -16,3 +16,6 @@ class Config:
         
         # Known movie extensions
         self.MovieExtensions = ['.mp4', '.avi', '.mkv']
+        
+        # Debugging
+        self.Debug = True

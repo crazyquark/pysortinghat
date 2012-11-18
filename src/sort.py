@@ -5,8 +5,11 @@ Created on Sep 29, 2012
 '''
 
 import sys
+
 import sorter.config
 import sorter.cleaner
+
+from sorter.tee import Tee
 
 from termcolor import cprint
 
@@ -22,10 +25,19 @@ def main():
         cprint('** No params specified, using default values **', 'red')
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
         
-    # Phase 1: cleanup!
+    # Phase 1: cleanup on target directory
     cleaner = sorter.cleaner.Cleaner(configs)
-    cleaner.clean()
+    cleaner.clean_target()
 
 if __name__ == '__main__':
+    # Redirect stdout
+    stdoutsav = sys.stdout
+    outputlog = open('output.log', 'w')
+    sys.stdout = Tee(stdoutsav, outputlog)
+    
+    # Redirect stderr
+    stderrsav = sys.stderr
+    errorslog = open('errors.log', 'w')
+    sys.stderr = Tee(stderrsav, errorslog)
+    
     main()
-

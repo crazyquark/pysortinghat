@@ -21,6 +21,9 @@ class Cleaner:
         
     def clean_target(self):
         ''' Time to clean! '''
+        if (not os.path.isdir(self.ConfigObj.MoviesDir)):
+            return
+        
         filelist = os.listdir(self.ConfigObj.MoviesDir)
         
         for fname in filelist:

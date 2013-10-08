@@ -16,4 +16,3 @@ mv libunrar.so ../libunrar.dylib
 
 echo "Move it in the right place..."
 sudo cp ../libunrar.dylib /usr/lib/
-

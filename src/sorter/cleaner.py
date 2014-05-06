@@ -9,13 +9,13 @@ import shutil
 import glob
 import re
 
-import unrar.rarfile
+import rarfile
 
 from termcolor import cprint
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
-    ''' Use unrar lib from https://github.com/matiasb/python-unrar '''
+    ''' Uses unrar lib from https://pypi.python.org/pypi/rarfile/2.6 '''
     def __init__(self, config):
         self.ConfigObj = config
         
@@ -70,11 +70,11 @@ class Cleaner:
         
         cleanPattern = re.escape(crtDir) + os.sep + '*.r[0-9][0-9]'
         for rarfilename in glob.glob(targetPattern):
-            if unrar.rarfile.is_rarfile(rarfilename):
+            if rarfile.is_rarfile(rarfilename):
                 print 'Found rarfile', rarfilename
                 print 'Extracting ...',
                 # extract
-                rarfile = unrar.rarfile.RarFile(rarfilename)
+                rarfile = rarfile.RarFile(rarfilename)
                 rarfile.extractall(crtDir)
                 print 'done!'
                 print 'Deleting ', rarfilename
@@ -94,9 +94,9 @@ class Cleaner:
             subsRarPattern = re.escape(subsDir) + os.sep + '*.rar'
             for subsRarfilename in glob.glob(subsRarPattern):
                 # Extract subtitles
-                if unrar.rarfile.is_rarfile(subsRarfilename):
+                if rarfile.is_rarfile(subsRarfilename):
                     print 'Extracting ', subsRarfilename, '...',
-                    subsRarfile = unrar.rarfile.RarFile(subsRarfilename)
+                    subsRarfile = rarfile.RarFile(subsRarfilename)
                     subsRarfile.extractall(crtDir)
                     print 'done!'
                     #Remove it
@@ -105,9 +105,9 @@ class Cleaner:
                     
                     # Extract idx if it exists
                     for idxRarfilename in glob.glob(subsRarfilename):
-                        if unrar.rarfile.is_rarfile(idxRarfilename):
+                        if rarfile.is_rarfile(idxRarfilename):
                             print 'Extracting ', idxRarfilename, '...',
-                            idxRarfile = unrar.rarfile.RarFile(idxRarfilename)
+                            idxRarfile = rarfile.RarFile(idxRarfilename)
                             idxRarfile.extractall(crtDir)
                             print 'done!'
                             # Remove it

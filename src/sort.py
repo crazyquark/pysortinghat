@@ -18,7 +18,7 @@ def main():
     print "The Sorting Hat is loading params"
     # if we have no params, the default values will be used
     configs = sorter.config.Config()
-    if len(sys.argv) > 4:
+    if len(sys.argv) >= 4:
         configs.ClutterDir = sys.argv[1]
         configs.MoviesDir = sys.argv[2]
         configs.TvDir = sys.argv[3]

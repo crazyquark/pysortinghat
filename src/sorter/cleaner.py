@@ -18,8 +18,11 @@ class Cleaner:
     ''' Uses unrar lib from https://pypi.python.org/pypi/rarfile/2.6 '''
     def __init__(self, config):
         self.ConfigObj = config
-        
-    def clean_target(self):
+    
+    def cleanTvDir(self):
+        pass
+    
+    def cleanMoviesDir(self):
         ''' Time to clean! '''
         if (not os.path.isdir(self.ConfigObj.MoviesDir)):
             return
@@ -29,11 +32,11 @@ class Cleaner:
         for fname in filelist:
             filepath = os.path.join(self.ConfigObj.MoviesDir, fname)
             if os.path.isfile(filepath):
-                self.processFile(fname)
+                self.processMovieFile(fname)
             elif os.path.isdir(filepath):
                 self.processDir(fname)
      
-    def processFile(self, fname):
+    def processMovieFile(self, fname):
         ''' Make a directory for orphan .AVIs '''
         isMovie = False
         for ext in self.ConfigObj.MovieExtensions:
@@ -58,7 +61,7 @@ class Cleaner:
         shutil.move(source, target)
         print 'Moved ',fname, 'to ', target
         
-    def processDir(self, dname):
+    def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''
         crtDir = self.ConfigObj.MoviesDir + os.sep + dname
         cprint('Processing ' + crtDir, 'green')

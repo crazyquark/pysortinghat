@@ -26,9 +26,16 @@ def main():
         cprint('** No params specified, using default values **', 'red')
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
         
-    # Phase 1: cleanup on target directory
+    # Phase 1: sort movies and TV episodes and move them to target folders
+    engine = sorter.engine.SortingEngine(configs)
+    engine.sort()
+    
+    # Phase 2: clean up movies dir
     cleaner = sorter.cleaner.Cleaner(configs)
-    cleaner.clean_target()
+    cleaner.cleanMoviesDir()
+    
+    # Phase 3: clean up TV episodes dir
+    cleaner.cleanTvDir()
 
 if __name__ == '__main__':
     # Redirect stdout

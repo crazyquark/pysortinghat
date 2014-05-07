@@ -10,7 +10,7 @@ class SortingEngine:
     def __init__(self, config):
         self.ConfigObj = config
 
-    def analyze(self):
+    def sort(self):
         '''
         Analyze cluttered dir, find movies
         '''
@@ -36,3 +36,6 @@ class SortingEngine:
         match = self.ConfigObj.TvEpsRegex.match(dname)
         if match:
             print 'Found TV content: ', dname
+            
+    def analyzeFile(self, fname):
+        pass

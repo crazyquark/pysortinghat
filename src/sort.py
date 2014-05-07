@@ -9,6 +9,7 @@ import sys
 
 import sorter.config
 import sorter.cleaner
+import sorter.engine
 
 from sorter.tee import Tee
 

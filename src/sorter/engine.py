@@ -5,13 +5,14 @@ Created on Sep 29, 2012
 '''
 
 import os
+import shutil
 from termcolor import cprint
 
 class SortingEngine:
     def __init__(self, config):
         self.SortConfig = config
-
-    def sort(self):
+    
+    def sortAndMoveToTarget(self):
         '''
         Analyze cluttered dir, find movies
         '''
@@ -20,11 +21,11 @@ class SortingEngine:
             filepath = os.path.join(self.SortConfig.ClutterDir, fname)
             
             if (os.path.isfile(filepath)):
-                self.analyzeFile(filepath)
+                self.processFile(filepath)
             elif (os.path.isdir(filepath)):
-                self.analyzeDir(filepath)
+                self.processDir(filepath)
 
-    def analyzeDir(self, dirpath):
+    def processDir(self, dirpath):
         '''
         Analyze directory name
         '''
@@ -54,5 +55,22 @@ class SortingEngine:
                         foundMovie = True
                         break
                     
-    def analyzeFile(self, fname):
+            # Put movies in Movies folder
+            if foundMovie:
+                SortingEngine.moveFolder(self.SortConfig, dname, True)
+                    
+    def processFile(self, fname):
+        # Not yet
         pass
+    
+    @staticmethod
+    def moveFolder(config, dname, isMovie):
+        # Make directory
+        target = config.MoviesDir + os.sep + dname
+        if not os.path.exists(target):
+            os.mkdir(config.MoviesDir + os.sep + dname)
+        
+        # Move file to directory
+        source = if isMovie config.MoviesDir + os.sep + dname else config.TvDir + os.sep + dname
+        shutil.move(source, target)
+        print 'Moved ',dname, 'to ', target

@@ -29,7 +29,7 @@ def main():
         
     # Phase 1: sort movies and TV episodes and move them to target folders
     engine = sorter.engine.SortingEngine(configs)
-    engine.sort()
+    engine.sortAndMoveToTarget()
     
     # Phase 2: clean up movies dir
     cleaner = sorter.cleaner.Cleaner(configs)

@@ -65,12 +65,15 @@ class SortingEngine:
     
     @staticmethod
     def moveFolder(config, dname, isMovie):
+        if config.DryRun:
+            return
+        
         # Make directory
         target = config.MoviesDir + os.sep + dname
         if not os.path.exists(target):
             os.mkdir(config.MoviesDir + os.sep + dname)
         
         # Move file to directory
-        source = if isMovie config.MoviesDir + os.sep + dname else config.TvDir + os.sep + dname
+        source = config.MoviesDir + os.sep + dname if isMovie else config.TvDir + os.sep + dname
         shutil.move(source, target)
         print 'Moved ',dname, 'to ', target

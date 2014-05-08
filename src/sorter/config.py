@@ -30,3 +30,6 @@ class Config:
         
         # Debugging
         self.Debug = True
+        
+        # Don't execute folder moves
+        self.DryRun = False

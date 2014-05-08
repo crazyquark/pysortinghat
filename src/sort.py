@@ -55,3 +55,5 @@ if __name__ == '__main__':
     sys.stderr = Tee(stderrsav, errorslog)
     
     main()
+    
+    cprint ('All done!', 'green')

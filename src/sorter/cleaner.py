@@ -64,7 +64,8 @@ class Cleaner:
     def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''
         crtDir = self.SortConfig.MoviesDir + os.sep + dname
-        cprint('Processing ' + crtDir, 'green')
+        if self.SortConfig.Debug:
+            cprint('Processing ' + crtDir, 'green')
         
         # Search for rar files
         targetPattern = re.escape(crtDir) + os.sep + '*.rar'

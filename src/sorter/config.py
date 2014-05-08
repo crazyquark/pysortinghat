@@ -29,7 +29,7 @@ class Config:
         self.SkipList = ['.AppleDouble']
         
         # Debugging
-        self.Debug = True
+        self.Debug = False
         
         # Don't execute folder moves
         self.DryRun = False

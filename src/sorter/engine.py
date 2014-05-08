@@ -30,17 +30,14 @@ class SortingEngine:
         print 'Analyzing ', dirpath
         
         # Get dir name only
-        dname = os.path.splitext(dirpath)[0]
-        
+        dname = os.path.dirname(dirpath)
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
         if match:
             print 'Found TV content: ', dname
         else:
             # Could it be a movie?
-            print 'Possible movie:', dname
 	    filesInFolder = os.listdir(dname)
-            print filesInFolder
             foundMovie = False
             for fname in filesInFolder:
                 if foundMovie:

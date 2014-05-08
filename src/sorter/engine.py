@@ -80,6 +80,5 @@ class SortingEngine:
         if (os.path.exists(target)):
             cprint("Warning: target dir exists, deleting!", 'yellow')
             shutil.rmtree(target)
-        shutil.copytree(source, target)
-        shutil.rmtree(source)
+        shutil.move(source, target)
         print 'Moved ',dname, 'to ', target

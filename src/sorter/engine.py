@@ -37,7 +37,7 @@ class SortingEngine:
             print 'Found TV content: ', dname
         else:
             # Could it be a movie?
-	    	filesInFolder = os.listdir(dname)
+            filesInFolder = os.listdir(dname)
             foundMovie = False
             for fname in filesInFolder:
                 if (not os.path.isfile(fname)):

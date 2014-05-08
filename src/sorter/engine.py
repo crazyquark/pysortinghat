@@ -8,15 +8,15 @@ import os
 
 class SortingEngine:
     def __init__(self, config):
-        self.ConfigObj = config
+        self.SortConfig = config
 
     def sort(self):
         '''
         Analyze cluttered dir, find movies
         '''
-        filelist = os.listdir(self.ConfigObj.ClutterDir)
+        filelist = os.listdir(self.SortConfig.ClutterDir)
         for fname in filelist:
-            filepath = os.path.join(self.ConfigObj.ClutterDir, fname)
+            filepath = os.path.join(self.SortConfig.ClutterDir, fname)
             
             if (os.path.isfile(filepath)):
                 self.analyzeFile(filepath)
@@ -33,9 +33,21 @@ class SortingEngine:
         dname = os.path.splitext(dirpath)[0]
         
         # Match against tv episodes regex
-        match = self.ConfigObj.TvEpsRegex.match(dname)
+        match = self.SortConfig.TvEpsRegex.match(dname)
         if match:
             print 'Found TV content: ', dname
-            
+        else:
+            # Could it be a movie?
+            filesInFolder = os.listdir(dname)
+            foundMovie = False
+            for fname in filesInFolder:
+                if foundMovie:
+                    break
+                for ext in self.SortConfig.MovieExtensions:
+                    if fname.endswith(ext):
+                        print 'Found Movie folder: ', dname
+                        foundMovie = True
+                        break
+                    
     def analyzeFile(self, fname):
         pass

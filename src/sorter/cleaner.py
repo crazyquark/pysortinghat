@@ -17,20 +17,20 @@ class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
     ''' Uses unrar lib from https://pypi.python.org/pypi/rarfile/2.6 '''
     def __init__(self, config):
-        self.ConfigObj = config
+        self.SortConfig = config
     
     def cleanTvDir(self):
         pass
     
     def cleanMoviesDir(self):
         ''' Time to clean! '''
-        if (not os.path.isdir(self.ConfigObj.MoviesDir)):
+        if (not os.path.isdir(self.SortConfig.MoviesDir)):
             return
         
-        filelist = os.listdir(self.ConfigObj.MoviesDir)
+        filelist = os.listdir(self.SortConfig.MoviesDir)
         
         for fname in filelist:
-            filepath = os.path.join(self.ConfigObj.MoviesDir, fname)
+            filepath = os.path.join(self.SortConfig.MoviesDir, fname)
             if os.path.isfile(filepath):
                 self.processMovieFile(fname)
             elif os.path.isdir(filepath):
@@ -39,7 +39,7 @@ class Cleaner:
     def processMovieFile(self, fname):
         ''' Make a directory for orphan .AVIs '''
         isMovie = False
-        for ext in self.ConfigObj.MovieExtensions:
+        for ext in self.SortConfig.MovieExtensions:
             if (fname.endswith(ext)):
                 isMovie = True
                 break
@@ -52,23 +52,23 @@ class Cleaner:
         dname = os.path.splitext(fname)[0]
         
         # Make directory
-        target = self.ConfigObj.MoviesDir + os.sep + dname
+        target = self.SortConfig.MoviesDir + os.sep + dname
         if not os.path.exists(target):
-            os.mkdir(self.ConfigObj.MoviesDir + os.sep + dname)
+            os.mkdir(self.SortConfig.MoviesDir + os.sep + dname)
         
         # Move file to directory
-        source = self.ConfigObj.MoviesDir + os.sep + fname
+        source = self.SortConfig.MoviesDir + os.sep + fname
         shutil.move(source, target)
         print 'Moved ',fname, 'to ', target
         
     def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''
-        crtDir = self.ConfigObj.MoviesDir + os.sep + dname
+        crtDir = self.SortConfig.MoviesDir + os.sep + dname
         cprint('Processing ' + crtDir, 'green')
         
         # Search for rar files
         targetPattern = re.escape(crtDir) + os.sep + '*.rar'
-        if self.ConfigObj.Debug:
+        if self.SortConfig.Debug:
             print 'Pattern: ', targetPattern
         
         cleanPattern = re.escape(crtDir) + os.sep + '*.r[0-9][0-9]'

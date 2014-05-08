@@ -22,8 +22,8 @@ class Config:
         self.TvEpsPattern = '.+\\.S[0-9][0-9](E[0-9][0-9])?\.?.*'
         self.TvExpRegex = re.compile(self.TvEpsPattern)
         
-        # Known movies patterns
-        self.MoviePattern = ''
+        #TODO: Known movies patterns
+        #self.MoviePattern = ''
         
         # Debugging
         self.Debug = True

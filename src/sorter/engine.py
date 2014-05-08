@@ -8,6 +8,21 @@ import os
 import shutil
 from termcolor import cprint
 
+class Movie:
+    '''
+    A class to represent a Movie file
+    '''
+    def __init__(self, fname):
+        self.Fname = fname
+
+class TvShow:
+    '''
+    A class to represent a TV Show
+    '''
+    def __init__(self, name):
+        self.Name = name
+        self.Episodes = []
+
 class SortingEngine:
     def __init__(self, config):
         self.SortConfig = config

@@ -4,6 +4,8 @@ pysortinghat
 The Sorting Hat: a small python script for organizing your movies library. No GUI right now.
 Originally on github.com.  
 
+For the record, only movie processing works now, the rest is WIP(TV shows for example)
+
 Requirements
 ------------
 Python and:  

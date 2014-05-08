@@ -29,7 +29,8 @@ class SortingEngine:
         '''
         Analyze directory name
         '''
-        cprint ('Analyzing ' + str(dirpath), 'green')
+        if self.SortConfig.Debug:
+            cprint ('Analyzing ' + str(dirpath), 'green')
         
         # Get dir name only
         dname = os.path.basename(dirpath)

@@ -14,8 +14,8 @@ class SortingEngine:
         '''
         Analyze cluttered dir, find movies
         '''
-	filelist = os.listdir(self.SortConfig.ClutterDir)
-	for fname in filelist:
+        filelist = os.listdir(self.SortConfig.ClutterDir)
+        for fname in filelist:
             filepath = os.path.join(self.SortConfig.ClutterDir, fname)
             
             if (os.path.isfile(filepath)):
@@ -38,8 +38,7 @@ class SortingEngine:
             print 'Found TV content: ', dname
         else:
             # Could it be a movie?
-            print 'Possible movie:', dname
-	    filesInFolder = os.listdir(dname)
+            filesInFolder = os.listdir(dname)
             print filesInFolder
             foundMovie = False
             for fname in filesInFolder:

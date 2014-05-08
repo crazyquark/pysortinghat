@@ -81,6 +81,8 @@ class SortingEngine:
         if (os.path.isfile(source)):
             shutil.move(source, target)
         else:
+            # This is needed in case some previous failed attempt created this folder
+            shutil.rmtree(target)
             shutil.copytree(source, target)
             shutil.rmtree(source)
         print 'Moved ',dname, 'to ', target

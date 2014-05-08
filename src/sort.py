@@ -23,6 +23,11 @@ def main():
         configs.ClutterDir = sys.argv[1]
         configs.MoviesDir = sys.argv[2]
         configs.TvDir = sys.argv[3]
+        
+        if len(sys.argv) > 4:
+            # In case of lots of params, debug and fake it
+            configs.Debug = True
+            configs.DryRun = True
     else:
         cprint('** No params specified, using default values, it will probably fail **', 'red')
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')

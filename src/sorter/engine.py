@@ -57,25 +57,35 @@ class SortingEngine:
                     
             # Put movies in Movies folder
             if foundMovie:
-                SortingEngine.moveFolder(self.SortConfig, dname, True)
+                self.moveFolder(self.SortConfig, dname, True)
                     
     def processFile(self, fname):
         # Not yet
-        pass
-    
-    @staticmethod
-    def moveFolder(config, dname, isMovie):
+        match = self.SortConfig.TvEpsRegex.match(fname)
+        if match:
+            cprint ('Found TV episode: ', fname)
+        else:
+            for ext in self.SortConfig.MovieExtensions:
+                if fname.endswith(ext):
+                    # Looks like an orphaned movie? Movie it to Movies dir and let the cleaner deal with it
+                    cprint ('Found orphaned movie file: ' + fname, 'green')
+                    source = os.path.join(self.SortConfig.ClutterDir, fname)
+                    shutil.move(source, self.SortConfig.MoviesDir)
+                    cprint ('Moved ' + fname + ' to ' + self.SortConfig.MoviesDir)
+                    break
+                
+    def moveFolder(self, dname, isMovie):
         '''
         Moves a file/folder recursively from their current location to proper target dir(Movies/TV)
         '''
-        if config.DryRun:
+        if self.SortConfig.DryRun:
             return
         
         # Make directory
-        target = os.path.join(config.MoviesDir if isMovie else config.TvDir, dname)
+        target = os.path.join(self.SortConfig.MoviesDir if isMovie else self.SortConfig.TvDir, dname)
         
         # Move file to directory
-        source = os.path.join(config.ClutterDir, dname)
+        source = os.path.join(self.SortConfig.ClutterDir, dname)
         # This is needed in case some previous failed attempt created this folder
         if (os.path.exists(target)):
             cprint("Warning: target dir exists, deleting!", 'yellow')

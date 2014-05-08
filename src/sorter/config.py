@@ -25,5 +25,8 @@ class Config:
         #TODO: Known movies patterns
         #self.MoviePattern = ''
         
+        # Folders/files to skip
+        self.SkipList = ['.AppleDouble']
+        
         # Debugging
         self.Debug = True

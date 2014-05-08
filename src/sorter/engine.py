@@ -44,6 +44,10 @@ class SortingEngine:
             for fname in filesInFolder:
                 if foundMovie:
                     break
+                
+                if fname in self.SortConfig.SkipList:
+                    continue
+                
                 for ext in self.SortConfig.MovieExtensions:
                     if fname.endswith(ext):
                         cprint ('Found Movie folder: ' + dname, 'red')

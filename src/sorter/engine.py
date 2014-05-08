@@ -57,14 +57,14 @@ class SortingEngine:
                     
             # Put movies in Movies folder
             if foundMovie:
-                SortingEngine.movieFile(self.SortConfig, dname, True)
+                SortingEngine.moveFolder(self.SortConfig, dname, True)
                     
     def processFile(self, fname):
         # Not yet
         pass
     
     @staticmethod
-    def movieFile(config, dname, isMovie):
+    def moveFolder(config, dname, isMovie):
         '''
         Moves a file/folder recursively from their current location to proper target dir(Movies/TV)
         '''
@@ -72,17 +72,14 @@ class SortingEngine:
             return
         
         # Make directory
-        target = os.path,join(config.MoviesDir if isMovie else config.TvDir, dname)
+        target = os.path.join(config.MoviesDir if isMovie else config.TvDir, dname)
         
         # Move file to directory
         source = os.path.join(config.ClutterDir, dname)
-        if (os.path.isfile(source)):
-            shutil.move(source, target)
-        else:
-            # This is needed in case some previous failed attempt created this folder
-            if (os.path.exists(target)):
-                cprint("Warning: target dir exists, deleting!", 'yellow')
-                shutil.rmtree(target)
-            shutil.copytree(source, target)
-            shutil.rmtree(source)
+        # This is needed in case some previous failed attempt created this folder
+        if (os.path.exists(target)):
+            cprint("Warning: target dir exists, deleting!", 'yellow')
+            shutil.rmtree(target)
+        shutil.copytree(source, target)
+        shutil.rmtree(source)
         print 'Moved ',dname, 'to ', target

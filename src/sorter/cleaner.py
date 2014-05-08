@@ -12,7 +12,6 @@ import re
 import rarfile
 
 from termcolor import cprint
-from engine import SortingEngine
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
@@ -52,8 +51,15 @@ class Cleaner:
         # Get only the filename
         dname = os.path.basename(fname)
         
-        # Move file
-        SortingEngine.movieFile(self.SortConfig, dname, True)
+        # Make directory
+        target = os.path.join(self.SortConfig.MoviesDir, dname)
+        if not os.path.exists(target):
+            os.mkdir(target)
+        
+        # Move file to directory
+        source = os.path.join(self.SortConfig.MoviesDir, fname)
+        shutil.move(source, target)
+        print 'Moved ',fname, 'to ', target
         
     def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''

@@ -30,7 +30,8 @@ class SortingEngine:
         print 'Analyzing ', dirpath
         
         # Get dir name only
-        dname = os.path.dirname(dirpath)
+        dname = os.path.basename(dirpath)
+        
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
         if match:

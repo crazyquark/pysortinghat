@@ -18,11 +18,8 @@ from termcolor import cprint
 def main():
     print "The Sorting Hat is loading params"
     # if we have no params, the default values will be used
-    configs = sorter.config.Config()
     if len(sys.argv) >= 4:
-        configs.ClutterDir = sys.argv[1]
-        configs.MoviesDir = sys.argv[2]
-        configs.TvDir = sys.argv[3]
+        configs = sorter.config.Config(sys.argv[1], sys.argv[2], sys.argv[3])
         
         if len(sys.argv) > 4:
             # In case of lots of params, debug and fake it

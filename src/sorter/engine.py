@@ -41,10 +41,6 @@ class SortingEngine:
             filesInFolder = os.listdir(dirpath)
             foundMovie = False
             for fname in filesInFolder:
-                if (not os.path.isfile(fname)):
-                    pass
-                    continue
-                
                 if foundMovie:
                     break
                 for ext in self.SortConfig.MovieExtensions:

@@ -20,7 +20,7 @@ class Config:
         
         # Known tv names patterns
         self.TvEpsPattern = '.+\\.S[0-9][0-9](E[0-9][0-9])?\.?.*'
-        self.TvExpRegex = re.compile(self.TvEpsPattern)
+        self.TvEpsRegex = re.compile(self.TvEpsPattern)
         
         #TODO: Known movies patterns
         #self.MoviePattern = ''

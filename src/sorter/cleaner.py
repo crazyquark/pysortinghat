@@ -49,7 +49,7 @@ class Cleaner:
             return
         
         # Get only the filename
-        dname = os.path.basename(fname)
+        dname = os.path.splitext(fname)[0]
         
         # Make directory
         target = os.path.join(self.SortConfig.MoviesDir, dname)

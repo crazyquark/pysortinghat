@@ -29,8 +29,8 @@ def main():
             configs.Debug = True
             configs.DryRun = True
     else:
-        cprint('** No params specified, using default values, it will probably fail **', 'red')
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
+        sys.exit(1)
         
     # Phase 1: sort movies and TV episodes and move them to target folders
     engine = sorter.engine.SortingEngine(configs)

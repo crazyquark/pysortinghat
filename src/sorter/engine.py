@@ -5,6 +5,7 @@ Created on Sep 29, 2012
 '''
 
 import os
+from termcolor import cprint
 
 class SortingEngine:
     def __init__(self, config):
@@ -27,7 +28,7 @@ class SortingEngine:
         '''
         Analyze directory name
         '''
-        print 'Analyzing ', dirpath
+        cprint ('Analyzing ' + str(dirpath), 'green')
         
         # Get dir name only
         dname = os.path.basename(dirpath)
@@ -35,7 +36,7 @@ class SortingEngine:
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
         if match:
-            print 'Found TV content: ', dname
+            cprint('Found TV content: ' + dname, 'red')
         else:
             # Could it be a movie?
             filesInFolder = os.listdir(dirpath)
@@ -45,7 +46,7 @@ class SortingEngine:
                     break
                 for ext in self.SortConfig.MovieExtensions:
                     if fname.endswith(ext):
-                        print 'Found Movie folder: ', dname
+                        cprint ('Found Movie folder: ' + dname, 'red')
                         foundMovie = True
                         break
                     

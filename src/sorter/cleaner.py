@@ -53,7 +53,7 @@ class Cleaner:
         dname = os.path.basename(fname)
         
         # Move file
-        SortingEngine.moveFolder(self.SortConfig, dname, True)
+        SortingEngine.movieFile(self.SortConfig, dname, True)
         
     def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''

@@ -72,12 +72,10 @@ class SortingEngine:
             return
         
         # Make directory
-        target = config.MoviesDir + os.sep + dname
-        if not os.path.exists(target):
-            os.mkdir(config.MoviesDir + os.sep + dname)
+        target = os.path,join(config.MoviesDir if isMovie else config.TvDir, dname)
         
         # Move file to directory
-        source = config.MoviesDir + os.sep + dname if isMovie else config.TvDir + os.sep + dname
+        source = os.path.join(config.ClutterDir, dname)
         if (os.path.isfile(source)):
             shutil.move(source, target)
         else:

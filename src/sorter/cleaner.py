@@ -34,7 +34,7 @@ class Cleaner:
             if os.path.isfile(filepath):
                 self.processMovieFile(fname)
             elif os.path.isdir(filepath):
-                self.processDir(fname)
+                self.processMovieDir(fname)
      
     def processMovieFile(self, fname):
         ''' Make a directory for orphan .AVIs '''

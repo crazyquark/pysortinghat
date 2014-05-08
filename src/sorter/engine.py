@@ -82,7 +82,9 @@ class SortingEngine:
             shutil.move(source, target)
         else:
             # This is needed in case some previous failed attempt created this folder
-            shutil.rmtree(target)
+            if (os.path.exists(target)):
+                cprint("Warning: target dir exists, deleting!", 'yellow')
+                shutil.rmtree(target)
             shutil.copytree(source, target)
             shutil.rmtree(source)
         print 'Moved ',dname, 'to ', target

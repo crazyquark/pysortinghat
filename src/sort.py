@@ -16,7 +16,7 @@ from sorter.tee import Tee
 from termcolor import cprint
 
 def main():
-    print "The Sorting Hat is loading params"
+    print("The Sorting Hat is loading params")
     # if we have no params, the default values will be used
     if len(sys.argv) >= 4:
         configs = sorter.config.Config(sys.argv[1], sys.argv[2], sys.argv[3])

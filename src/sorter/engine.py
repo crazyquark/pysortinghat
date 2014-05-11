@@ -107,4 +107,4 @@ class SortingEngine:
             cprint("Warning: target dir exists, deleting!", 'yellow')
             shutil.rmtree(target)
         shutil.move(source, target)
-        print 'Moved ',dname, 'to ', target
+        print('Moved ',dname, 'to ', target)

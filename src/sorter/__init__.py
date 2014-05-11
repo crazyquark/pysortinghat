@@ -1,1 +1,1 @@
-print 'Sorter module reporting for duty!'
+print('Sorter module reporting for duty!')

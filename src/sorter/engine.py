@@ -73,13 +73,13 @@ class SortingEngine:
                     
             # Put movies in Movies folder
             if foundMovie:
-                self.moveFolder(self.SortConfig, dname, True)
+                self.moveFolder(dname, True)
                     
     def processFile(self, fname):
         # Not yet
         match = self.SortConfig.TvEpsRegex.match(fname)
         if match:
-            cprint ('Found TV episode: ', fname)
+            cprint ('Found TV episode: ' + fname, 'green')
         else:
             for ext in self.SortConfig.MovieExtensions:
                 if fname.endswith(ext):

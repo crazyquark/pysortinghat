@@ -2,8 +2,8 @@
 UNAME = `shell uname` 
 
 echo "Installing Python deps, requires sudo pass please type it..." 
-sudo easy_install termcolor 
-sudo easy_install rarfile
+sudo easy_install3 termcolor 
+sudo easy_install3 rarfile
 
 echo "Get UnRAR src..."
 wget ftp://ftp.rarlabs.com/rar/unrarsrc-5.0.12.tar.gz

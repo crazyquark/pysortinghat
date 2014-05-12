@@ -5,12 +5,12 @@ Created on Sep 29, 2012
 '''
 
 import re
-import ConfigParser
+import configparser
 
 class Config:
     def loadConfig(self, configFilename = '../config/sorter.ini'):
         # Load settings from config file
-        configReader = ConfigParser.ConfigParser()
+        configReader = configparser.ConfigParser()
         configReader.read(configFilename)
         
         sections = configReader.sections()

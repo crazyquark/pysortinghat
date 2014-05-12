@@ -19,7 +19,7 @@ def main():
     print("The Sorting Hat is loading params")
     # if we have no params, the default values will be used
     if len(sys.argv) >= 4:
-        configs = sorter.config.Config(sys.argv[1], sys.argv[2], sys.argv[3])
+        configs = sorter.config.Config({'clutter': sys.argv[1], 'movies': sys.argv[2], 'tv': sys.argv[3]})
         
         if len(sys.argv) > 4:
             # In case of lots of params, debug and fake it
@@ -27,7 +27,8 @@ def main():
             configs.DryRun = True
     else:
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
-        sys.exit(1)
+        cprint('No params were passed, will use settings from conig/sorter.ini', 'yellow')
+        configs = sorter.config.Config()
         
     # Phase 1: sort movies and TV episodes and move them to target folders
     engine = sorter.engine.SortingEngine(configs)

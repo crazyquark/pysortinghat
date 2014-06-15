@@ -1,0 +1,10 @@
+Issues
+------
+A folder containing TV episodes will be recognized as movie. Auch.
+When finding orphaned movie file, subtitles will not be moved
+Orphan TV episode subtitles will be recoginized as movie file
+
+Features
+--------
+Add SS(python opensubtitles support)
+Add TVDB support(python package exists)

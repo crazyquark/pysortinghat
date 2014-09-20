@@ -15,14 +15,14 @@ class Config:
         
         sections = configReader.sections()
         if len(sections) > 0:
+            config_section = sections[0]
             options = configReader.options(sections[0])
-            print(options)
-            if 'Clutter' in options:
-                self.ClutterDir = c[section[0]]['Clutter']
-            if 'Movies' in options:
-                self.MoviesDir = c[section[0]]['Movies']
-            if 'TV' in options:
-                self.TvDir = c[section[0]]['TV']
+            if 'clutter' in options:
+                self.ClutterDir = configReader[config_section]['clutter']
+            if 'movies' in options:
+                self.MoviesDir = configReader[config_section]['movies']
+            if 'tv' in options:
+                self.TvDir = configReader[config_section]['tv']
             
     def __init__(self, **kwargs):
         if 'config' in list(kwargs.keys()):

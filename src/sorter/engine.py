@@ -4,8 +4,7 @@ Created on Sep 29, 2012
 @author: Cristian Sandu
 '''
 
-import os
-import shutil
+import os, sys, shutil
 from termcolor import cprint
 
 class Movie:
@@ -31,6 +30,10 @@ class SortingEngine:
         '''
         Analyze cluttered dir, find movies
         '''
+        if (not os.path.isdir(self.SortConfig.ClutterDir)):
+            cprint('Folder ' + self.SortConfig.ClutterDir + ' does not exit! Aborting.', 'red')
+            sys.exit(1)
+            
         filelist = os.listdir(self.SortConfig.ClutterDir)
         for fname in filelist:
             filepath = os.path.join(self.SortConfig.ClutterDir, fname)

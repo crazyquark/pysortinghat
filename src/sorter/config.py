@@ -8,7 +8,7 @@ import re
 import configparser
 
 class Config:
-    def loadConfig(self, configFilename = '../../config/sorter.ini'):
+    def loadConfig(self, configFilename = '../config/sorter.ini'):
         # Load settings from config file
         configReader = configparser.ConfigParser()
         configReader.read(configFilename)

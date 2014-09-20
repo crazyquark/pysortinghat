@@ -8,7 +8,7 @@ import re
 import configparser
 
 class Config:
-    def loadConfig(self, configFilename = '../config/sorter.ini'):
+    def loadConfig(self, configFilename = '../../config/sorter.ini'):
         # Load settings from config file
         configReader = configparser.ConfigParser()
         configReader.read(configFilename)
@@ -16,12 +16,13 @@ class Config:
         sections = configReader.sections()
         if len(sections) > 0:
             options = configReader.options(sections[0])
-            if 'Clutter' in list(options.keys()):
-                self.ClutterDir = options['Clutter']
-            if 'Movies' in list(options.keys()):
-                self.MoviesDir = options['Movies']
-            if 'TV' in list(options.keys()):
-                self.TvDir = options['TV']
+            print(options)
+            if 'Clutter' in options:
+                self.ClutterDir = c[section[0]]['Clutter']
+            if 'Movies' in options:
+                self.MoviesDir = c[section[0]]['Movies']
+            if 'TV' in options:
+                self.TvDir = c[section[0]]['TV']
             
     def __init__(self, **kwargs):
         if 'config' in list(kwargs.keys()):

@@ -1,6 +1,6 @@
-#!/usr/bin/python3
-'''
-Created on Sep 29, 2012
+#!/usr/bin/python3	
+'''	
+Created  Sep 29, 2012
 
 @author: Cristian Sandu
 '''
@@ -27,7 +27,7 @@ def main():
             configs.DryRun = True
     else:
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
-        cprint('No params were passed, will use settings from conig/sorter.ini', 'yellow')
+        cprint('No params were passed, will use settings from config/sorter.ini', 'yellow')
         configs = sorter.config.Config()
         
     # Phase 1: sort movies and TV episodes and move them to target folders

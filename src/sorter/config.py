@@ -16,27 +16,27 @@ class Config:
         sections = configReader.sections()
         if len(sections) > 0:
             options = configReader.options(sections[0])
-            if 'Clutter' in options.keys():
+            if 'Clutter' in list(options.keys()):
                 self.ClutterDir = options['Clutter']
-            if 'Movies' in options.keys():
+            if 'Movies' in list(options.keys()):
                 self.MoviesDir = options['Movies']
-            if 'TV' in options.keys():
+            if 'TV' in list(options.keys()):
                 self.TvDir = options['TV']
             
     def __init__(self, **kwargs):
-        if 'config' in kwargs.keys():
+        if 'config' in list(kwargs.keys()):
             self.loadConfig(kwargs['config'])
         else:
             # Load from default config
             self.loadConfig()
         # Where the mess is
-        if 'clutter' in kwargs.keys():
+        if 'clutter' in list(kwargs.keys()):
             self.ClutterDir = kwargs['clutter']
         
         # Where the videos will be neatly arranged
-        if 'movies' in kwargs.keys():
+        if 'movies' in list(kwargs.keys()):
             self.MoviesDir = kwargs['movies']
-        if 'tv' in kwargs.keys():
+        if 'tv' in list(kwargs.keys()):
             self.TvDir = kwargs['tv']
         
         # Known movie extensions

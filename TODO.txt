@@ -6,5 +6,6 @@ Orphan TV episode subtitles will be recoginized as movie file
 
 Features
 --------
+Use guessit to analyze content instead of naive approach
 Add SS(python opensubtitles support)
 Add TVDB support(python package exists)

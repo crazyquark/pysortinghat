@@ -31,6 +31,12 @@ class Tee:
         self.fd1.flush()
         self.fd2.flush()
         
+    def close(self):
+        '''
+        Overwrite close
+        '''
+        self.__del__()
+        
     def __del__(self):
         '''
         Close file descriptors when done

@@ -3,9 +3,9 @@ UNAME = `shell uname`
 
 echo "Installing Python deps, requires sudo pass please type it..." 
 apt-get install python3-pip
-pip3 install termcolor 
-pip3 install rarfile
-pip3 install guessit
+pip-3.2 install termcolor 
+pip-3.2 install rarfile
+pip-3.2 install guessit
 
 echo "Get UnRAR src..."
 wget ftp://ftp.rarlabs.com/rar/unrarsrc-5.0.12.tar.gz

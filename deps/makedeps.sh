@@ -1,5 +1,5 @@
 #!/bin/bash
-UNAME = `shell uname` 
+UNAME=`uname` 
 
 echo "Installing Python deps, requires sudo pass please type it..." 
 sudo easy_install3 termcolor 

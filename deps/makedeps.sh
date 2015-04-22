@@ -7,7 +7,7 @@ sudo easy_install3 rarfile
 sudo easy_install3 guessit
 
 echo "Get UnRAR src..."
-wget ftp://ftp.rarlabs.com/rar/unrarsrc-5.0.12.tar.gz
+wget ftp://ftp.rarlabs.com/rar/unrarsrc-5.2.7.tar.gz
 
 echo "Compiling libunrar..."
 tar xzvf unrarsrc-*.tar.gz

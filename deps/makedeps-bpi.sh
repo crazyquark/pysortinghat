@@ -1,14 +1,14 @@
 #!/bin/bash
 UNAME=`uname` 
 
-echo "Installing Python deps, requires sudo pass please type it..." 
+echo "Installing Python deps..." 
 apt-get install python3-pip
 pip-3.2 install termcolor 
 pip-3.2 install rarfile
 pip-3.2 install guessit
 
 echo "Get UnRAR src..."
-wget ftp://ftp.rarlabs.com/rar/unrarsrc-5.0.12.tar.gz
+wget ftp://ftp.rarlabs.com/rar/unrarsrc-5.2.7.tar.gz
 
 echo "Compiling libunrar..."
 tar xzvf unrarsrc-*.tar.gz

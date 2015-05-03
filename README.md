@@ -6,6 +6,8 @@ The Sorting Hat: a small python script for organizing your movies library. No GU
 For the record, only movie processing works now, the rest is WIP(TV shows for example).  
 Uses Python3, because, you know, it's the Future(and terminators roam the planet).
 
+I use it on my Raspberry Pi and Banana Pi to organize my shared media library.  
+
 Requirements
 ------------
 Python 3.2+ and:  

@@ -115,7 +115,7 @@ class SortingEngine:
             cprint('Warning: target dir exists, deleting!', 'yellow')
             shutil.rmtree(target)
         shutil.move(source, target)
-        print(('Moved ',dname, 'to ', target))
+        print('Moved ',dname, 'to ', target)
         
         # OK, we are attempting to symlink the file back so that transmission can keep seeding
         if self.SortConfig.Symlinks:

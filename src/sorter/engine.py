@@ -90,12 +90,12 @@ class SortingEngine:
                     cprint ('Found orphaned movie file: ' + fname, 'green')
                     source = os.path.join(self.SortConfig.ClutterDir, fname)
                     shutil.move(source, self.SortConfig.MoviesDir)
-                    cprint ('Moved ' + fname + ' to ' + self.SortConfig.MoviesDir)
+                    cprint ('Moved ' + fname + ' to ' + self.SortConfig.MoviesDir, 'red')
                     
                     if self.SortConfig.Symlinks:
                         target = os.path.join(self.SortConfig.MoviesDir, fname)
                         os.symlink(target, source)
-                        cprint('Symlinked ' + target + ' to ' + source, 'green')
+                        cprint('Symlinked ' + target + ' to ' + source, 'red')
                     break
                 
     def moveFolder(self, dname, isMovie):

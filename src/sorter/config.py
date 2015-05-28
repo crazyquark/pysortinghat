@@ -46,7 +46,7 @@ class Config:
         self.MovieExtensions = ['.mp4', '.avi', '.mkv']
         
         # Known tv names patterns
-        self.TvEpsPattern = '.+\\.S[0-9][0-9](E[0-9][0-9])?\.?.*'
+        self.TvEpsPattern = '(.+\\.(S|s)?[0-9][0-9]((E|e)?[0-9][0-9])?\.?.*)|(.+-pilot\\..*)'
         self.TvEpsRegex = re.compile(self.TvEpsPattern)
         
         #TODO: Known movies patterns

@@ -15,14 +15,16 @@ class Config:
         
         sections = configReader.sections()
         if len(sections) > 0:
-            config_section = sections[0]
+            configSection = sections[0]
             options = configReader.options(sections[0])
             if 'clutter' in options:
-                self.ClutterDir = configReader[config_section]['clutter']
+                self.ClutterDir = configReader[configSection]['clutter']
             if 'movies' in options:
-                self.MoviesDir = configReader[config_section]['movies']
+                self.MoviesDir = configReader[configSection]['movies']
             if 'tv' in options:
-                self.TvDir = configReader[config_section]['tv']
+                self.TvDir = configReader[configSection]['tv']
+            if 'symlinks' in options:
+                self.Symlinks = bool(configReader[configSection]['symlinks'])
             
     def __init__(self, **kwargs):
         if 'config' in list(kwargs.keys()):
@@ -58,3 +60,7 @@ class Config:
         
         # Don't execute folder moves
         self.DryRun = False
+        
+        # Don't create symlinks for moved files; 
+        # set this to true to keep seeding a torrent file for example(after the file was moved)
+        self.Symlinks = False

@@ -1,8 +1,8 @@
 Issues
 ------
 A folder containing TV episodes will be recognized as movie. Auch.
-When finding orphaned movie file, subtitles will not be moved
-Orphan TV episode subtitles will be recoginized as movie file
+When finding an orphaned movie file, subtitles will not be moved
+Orphan TV episode subtitles will be recognized as movie files
 
 Features
 --------

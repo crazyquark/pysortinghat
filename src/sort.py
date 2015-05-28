@@ -5,7 +5,7 @@ Created  Sep 29, 2012
 @author: Cristian Sandu
 '''
 
-import sys
+import sys, subprocess, os
 
 import sorter.config
 import sorter.cleaner
@@ -29,18 +29,37 @@ def main():
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
         cprint('No params were passed, will use settings from config/sorter.ini', 'yellow')
         configs = sorter.config.Config()
+    
+    # Before fucking things up, attempt to stop transmission-daemon(will restart it after all is done)
+    isRoot = (os.geteuid() == 0)
+    retcode = subprocess.call(['service', 'transmission-daemon', 'stop'] if isRoot else ['sudo', 'service', 'transmission-daemon', 'stop'])
+    
+    transmissionWasRunning = (retcode == 0)
+    if not transmissionWasRunning:
+        cprint('Failed to stop transmission-daemon, was it running?', 'yellow')
+    
+    try:
+        # Phase 1: sort movies and TV episodes and move them to target folders
+        engine = sorter.engine.SortingEngine(configs)
+        engine.sortAndMoveToTarget()
         
-    # Phase 1: sort movies and TV episodes and move them to target folders
-    engine = sorter.engine.SortingEngine(configs)
-    engine.sortAndMoveToTarget()
-    
-    # Phase 2: clean up movies dir
-    cleaner = sorter.cleaner.Cleaner(configs)
-    cleaner.cleanMoviesDir()
-    
-    # Phase 3: clean up TV episodes dir
-    cleaner.cleanTvDir()
-
+        # Phase 2: clean up movies dir
+        cleaner = sorter.cleaner.Cleaner(configs)
+        cleaner.cleanMoviesDir()
+        
+        # Phase 3: clean up TV episodes dir
+        cleaner.cleanTvDir()
+    except Exception as e:
+        cprint('There was an error: ' + e.message, 'yellow')
+        retcode = 1
+    finally:
+        # Restart transmission if we stopped it
+        if transmissionWasRunning:
+            retcode = subprocess.call(['service', 'transmission-daemon', 'start'] if isRoot else ['sudo', 'service', 'transmission-daemon', 'start']) 
+            if retcode != 0:
+                cprint('Failed to restart transmission-daemon, not sure what happened, sorry...', 'yellow')
+            sys.exit(retcode)
+            
 if __name__ == '__main__':
     # Redirect stdout
     stdoutsav = sys.stdout

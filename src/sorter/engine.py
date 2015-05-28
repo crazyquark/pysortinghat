@@ -91,6 +91,11 @@ class SortingEngine:
                     source = os.path.join(self.SortConfig.ClutterDir, fname)
                     shutil.move(source, self.SortConfig.MoviesDir)
                     cprint ('Moved ' + fname + ' to ' + self.SortConfig.MoviesDir)
+                    
+                    if self.SortConfig.Symlinks:
+                        target = os.path.join(self.SortConfig.MoviesDir, fname)
+                        os.symlink(target, source)
+                        cprint('Symlinked ' + target + ' to ' + source, 'green')
                     break
                 
     def moveFolder(self, dname, isMovie):
@@ -107,7 +112,12 @@ class SortingEngine:
         source = os.path.join(self.SortConfig.ClutterDir, dname)
         # This is needed in case some previous failed attempt created this folder
         if (os.path.exists(target)):
-            cprint("Warning: target dir exists, deleting!", 'yellow')
+            cprint('Warning: target dir exists, deleting!', 'yellow')
             shutil.rmtree(target)
         shutil.move(source, target)
         print(('Moved ',dname, 'to ', target))
+        
+        # OK, we are attempting to symlink the file back so that transmission can keep seeding
+        if self.SortConfig.Symlinks:
+            os.symlink(target, source, target_is_directory=True)
+            cprint('Symlinked ' + target + ' to ' + source, 'green')

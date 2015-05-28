@@ -25,3 +25,8 @@ cp ../libunrar.dylib /usr/lib/
 else
 cp libunrar.so /usr/lib/
 fi
+
+echo "Clean up..."
+cd ../
+rm -rf unrar*
+

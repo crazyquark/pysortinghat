@@ -27,21 +27,7 @@ class Config:
                 self.Symlinks = bool(configReader[configSection]['symlinks'])
             
     def __init__(self, **kwargs):
-        if 'config' in list(kwargs.keys()):
-            self.loadConfig(kwargs['config'])
-        else:
-            # Load from default config
-            self.loadConfig()
-        # Where the mess is
-        if 'clutter' in list(kwargs.keys()):
-            self.ClutterDir = kwargs['clutter']
-        
-        # Where the videos will be neatly arranged
-        if 'movies' in list(kwargs.keys()):
-            self.MoviesDir = kwargs['movies']
-        if 'tv' in list(kwargs.keys()):
-            self.TvDir = kwargs['tv']
-        
+        # Defaults:
         # Known movie extensions
         self.MovieExtensions = ['.mp4', '.avi', '.mkv']
         
@@ -64,3 +50,20 @@ class Config:
         # Don't create symlinks for moved files; 
         # set this to true to keep seeding a torrent file for example(after the file was moved)
         self.Symlinks = False
+        
+        # Load config
+        if 'config' in list(kwargs.keys()):
+            self.loadConfig(kwargs['config'])
+        else:
+            # Load from default config
+            self.loadConfig()
+        # Where the mess is
+        if 'clutter' in list(kwargs.keys()):
+            self.ClutterDir = kwargs['clutter']
+        
+        # Where the videos will be neatly arranged
+        if 'movies' in list(kwargs.keys()):
+            self.MoviesDir = kwargs['movies']
+        if 'tv' in list(kwargs.keys()):
+            self.TvDir = kwargs['tv']
+        

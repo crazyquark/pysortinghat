@@ -119,5 +119,5 @@ class SortingEngine:
         
         # OK, we are attempting to symlink the file back so that transmission can keep seeding
         if self.SortConfig.Symlinks:
-            os.symlink(target, source, target_is_directory=True)
+            os.symlink(target, source)
             cprint('Symlinked ' + target + ' to ' + source, 'green')

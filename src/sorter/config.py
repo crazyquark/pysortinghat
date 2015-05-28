@@ -47,9 +47,9 @@ class Config:
         # Don't execute folder moves
         self.DryRun = False
         
-        # Don't create symlinks for moved files; 
+        # Create symlinks for moved files; 
         # set this to true to keep seeding a torrent file for example(after the file was moved)
-        self.Symlinks = False
+        self.Symlinks = True
         
         # Load config
         if 'config' in list(kwargs.keys()):

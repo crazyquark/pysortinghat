@@ -5,6 +5,7 @@ echo "Installing Python deps, requires sudo pass please type it..."
 sudo apt-get install python3 python3-setuptools
 sudo easy_install3 termcolor 
 sudo easy_install3 rarfile
+sudo easy_install3 enzyme
 sudo easy_install3 guessit
 
 echo "Get UnRAR src..."

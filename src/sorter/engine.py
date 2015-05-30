@@ -6,6 +6,7 @@ Created on Sep 29, 2012
 
 import os, sys, shutil
 from termcolor import cprint
+from guessit import guess_file_info as guessFileInfo
 
 class Movie:
     '''
@@ -55,7 +56,8 @@ class SortingEngine:
         
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
-        if match:
+        guessedInfoDict = guessFileInfo(dname)
+        if match or guessedInfoDict.get('type') == 'episode':
             cprint('Found TV content: ' + dname, 'red')
         else:
             # Could it be a movie?

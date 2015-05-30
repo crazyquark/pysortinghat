@@ -6,6 +6,7 @@ Created on Sep 29, 2012
 
 import re
 import configparser
+from os import path
 
 class Config:
     def loadConfig(self, configFilename = '../config/sorter.ini'):
@@ -53,18 +54,18 @@ class Config:
         
         # Load config
         if 'config' in list(kwargs.keys()):
-            self.loadConfig(kwargs['config'])
+            self.loadConfig(path.abspath(path.expanduser(kwargs['config'])))
         else:
             # Load from default config
             self.loadConfig()
         
         # Where the mess is
         if 'clutter' in list(kwargs.keys()):
-            self.ClutterDir = kwargs['clutter']
+            self.ClutterDir = path.abspath(path.expanduser(kwargs['clutter']))
         
         # Where the videos will be neatly arranged
         if 'movies' in list(kwargs.keys()):
-            self.MoviesDir = kwargs['movies']
+            self.MoviesDir = path.abspath(path.expanduser(kwargs['movies']))
         if 'tv' in list(kwargs.keys()):
-            self.TvDir = kwargs['tv']
+            self.TvDir = path.abspath(path.expanduser(kwargs['tv']))
         

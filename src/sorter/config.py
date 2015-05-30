@@ -57,6 +57,7 @@ class Config:
         else:
             # Load from default config
             self.loadConfig()
+        
         # Where the mess is
         if 'clutter' in list(kwargs.keys()):
             self.ClutterDir = kwargs['clutter']

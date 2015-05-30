@@ -54,9 +54,13 @@ class SortingEngine:
         # Get dir name only
         dname = os.path.basename(dirpath)
         
+        # Damn .AppleDouble
+        if dname in self.SortConfig.SkipList:
+            return
+        
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
-        guessedInfoDict = guessFileInfo(dname)
+        guessedInfoDict = guessFileInfo(dname, info=['filename'])
         if match or guessedInfoDict.get('type') == 'episode':
             cprint('Found TV content: ' + dname, 'red')
         else:

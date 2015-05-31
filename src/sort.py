@@ -59,7 +59,20 @@ def main():
             if retcode != 0:
                 cprint('Failed to restart transmission-daemon, not sure what happened, sorry...', 'yellow')
             sys.exit(retcode)
+
+def cleanSymlinks():
+    print('Running symlink cleaner')
+    dirToClean = os.path.abspath(os.path.expanduser(sys.argv[2]))
+    
+    if os.path.exists(dirToClean):
+        filelist = os.listdir(dirToClean)
+        for fname in filelist:
+            target = os.path.join(dirToClean, fname)
             
+            if os.path.islink(target):
+                os.unlink(target)
+                cprint('Deleted link ' + fname + ', from ' + dirToClean, 'red')
+                
 if __name__ == '__main__':
     # Redirect stdout
     stdoutsav = sys.stdout
@@ -71,6 +84,10 @@ if __name__ == '__main__':
     errorslog = open('errors.log', 'w')
     sys.stderr = Tee(stderrsav, errorslog)
     
-    main()
+    # Cleanup mode?
+    if len(sys.argv) == 3 and sys.argv[1] == '--cs':
+        cleanSymlinks()
+    else:
+        main()
     
     cprint ('All done!', 'green')

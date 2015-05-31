@@ -3,7 +3,6 @@ pysortinghat
 
 The Sorting Hat: a small python script for organizing your movies library. No GUI right now.
 
-For the record, only movie processing works now, the rest is WIP(TV shows for example).  
 Uses Python3, because, you know, it's the Future(and terminators roam the planet).
 
 I use it on my Raspberry Pi and Banana Pi to organize my shared media library.  
@@ -18,6 +17,10 @@ Python 3.2+ and:
 - see https://pypi.python.org/pypi/rarfile/2.2  
 - You will probably need to build from source, see ftp://ftp.rarlabs.com/rar/  
 
+Changelog
+---------
+Version 0.1.0
+- implemented TV episodes sorting using guessit
 
 -----
 - Check out the script deps/makedeps.sh for an automated way to install dependencies(OS X and Linux only)

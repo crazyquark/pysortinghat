@@ -65,10 +65,10 @@ class Cleaner:
             subFname = os.path.splitext(fname)[0] + subExt
             
         # Move subtitle to the Movies folder
-            if os.path.exists(subFname):
-                source = os.path.join(self.SortConfig.MoviesDir, subFname)
-                shutil.move(source, target)
-                print('Moved', subFname, 'to', target)
+        if os.path.exists(subFname):
+            source = os.path.join(self.SortConfig.MoviesDir, subFname)
+            shutil.move(source, target)
+            print('Moved', subFname, 'to', target)
                 
     def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''

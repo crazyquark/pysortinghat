@@ -18,6 +18,7 @@ from termcolor import cprint
 def main():
     print("The Sorting Hat is loading params")
     # if we have no params, the default values will be used
+    configs = None
     if len(sys.argv) >= 4:
         configs = sorter.config.Config(clutter = sys.argv[1], movies = sys.argv[2], tv = sys.argv[3])
         
@@ -29,7 +30,7 @@ def main():
         cprint('Usage: sort.py clutter_dir movies_dir tv_dir', 'red')
         cprint('No params were passed, will use settings from config/sorter.ini', 'yellow')
         configs = sorter.config.Config()
-    
+                
     cprint('SortingHat Version ' + configs.Version, 'green')
     
     # Before fucking things up, attempt to stop transmission-daemon(will restart it after all is done)

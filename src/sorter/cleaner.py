@@ -167,7 +167,9 @@ class Cleaner:
                 self.movieEpisodeDir(dname, possibleShowName)
             
     def processMovieDir(self, dname):
-        ''' Un-archive files, make nice '''
+        ''' 
+        Un-archive files, make nice 
+        '''
         crtDir = self.SortConfig.MoviesDir + os.sep + dname
         if self.SortConfig.Debug:
             cprint('Processing ' + crtDir, 'green')
@@ -181,7 +183,7 @@ class Cleaner:
         for rarfilename in glob.glob(targetPattern):
             if rarfile.is_rarfile(rarfilename):
                 print('Found rarfile', rarfilename)
-                print('Extracting ...', end=' ')
+                print('Extracting ...',)
                 # extract
                 rarfile = rarfile.RarFile(rarfilename)
                 rarfile.extractall(crtDir)
@@ -225,3 +227,4 @@ class Cleaner:
             # Delete subs dir
             print('Deleting ', subsDir)
             shutil.rmtree(subsDir)
+        

@@ -12,6 +12,7 @@ import re
 import rarfile
 
 from termcolor import cprint
+from guessit import guess_file_info as guessFileInfo
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
@@ -20,7 +21,17 @@ class Cleaner:
         self.SortConfig = config
     
     def cleanTvDir(self):
-        pass
+        if (not os.path.isdir(self.SortConfig.TvDir)):
+            return
+        
+        filelist = os.listdir(self.SortConfig.TvDir)
+        
+        for fname in filelist:
+            filepath = os.path.join(self.SortConfig.TvDir, fname)
+            if os.path.isfile(filepath):
+                self.processTvFile(fname)
+            elif os.path.isdir(filepath):
+                self.processTvDir(fname)
     
     def cleanMoviesDir(self):
         ''' Time to clean! '''
@@ -35,9 +46,61 @@ class Cleaner:
                 self.processMovieFile(fname)
             elif os.path.isdir(filepath):
                 self.processMovieDir(fname)
-     
+    
+    def processTvFile(self, fname):
+        ''' Moves orphan TV episode files to the proper folder and fixes symlinks'''
+        ext = os.path.splitext(fname)[1]
+        if ext in self.SortConfig.SubsExtensions:
+            return # will deal with you later, mister!
+        
+        availableShowDirs = os.listdir(self.SortConfig.TvDir)
+        
+        guessedInfoDict = guessFileInfo(fname, info=['filename'])
+        if 'series' in guessedInfoDict:
+            possibleShowName = guessedInfoDict['series'].title() # Make first letter caps, like in "Supernatural"
+        
+            if possibleShowName in availableShowDirs:
+                self.moveEpisodeFile(possibleShowName, fname)
+            elif 'year' in guessedInfoDict:
+                possibleShowName = possibleShowName + ' ' + str(guessedInfoDict['year'])
+                if possibleShowName in availableShowDirs:
+                    self.moveEpisodeFile(possibleShowName, fname)
+    
+    def processSubs(self, fname, source, targetDir):
+        for subExt in self.SortConfig.SubsExtensions:
+            subFname = os.path.splitext(fname)[0] + subExt
+            # Move subtitle to the Movies folder
+            
+            source = os.path.join(self.SortConfig.TvDir, subFname)
+            if os.path.exists(source):
+                shutil.move(source, targetDir)
+                cprint('Moved ' + subFname + ' to ' + targetDir, 'yellow')
+    
+    def moveEpisodeFile(self, showName, fname):
+        source = os.path.join(self.SortConfig.TvDir, fname)
+        target = os.path.join(self.SortConfig.TvDir, showName)
+        
+        shutil.move(source, target)
+        cprint('Moved ' + fname + ' to ' + target, 'red')
+        
+        # Fix possible dangling symlinks
+        self.fixSymlink(fname, target)
+        
+        # Move subs if any
+        self.processSubs(fname, source, target)
+        
+    def fixSymlink(self, fname, target):
+        if fname in os.listdir(self.SortConfig.ClutterDir):
+            symlinkFile = os.path.join(self.SortConfig.ClutterDir, fname)
+            
+            if os.path.islink(symlinkFile):
+                # Oh no, we need to fix this
+                os.unlink(symlinkFile)
+                os.symlink(target, os.path.join(target, symlinkFile))
+                cprint('Fixed symlink ' + symlinkFile, 'red')
+    
     def processMovieFile(self, fname):
-        ''' Make a directory for orphan .AVIs '''
+        ''' Make a directory for orphan .AVIs and fix symlinks'''
         isMovie = False
         for ext in self.SortConfig.MovieExtensions:
             if (fname.endswith(ext)):
@@ -69,7 +132,40 @@ class Cleaner:
             source = os.path.join(self.SortConfig.MoviesDir, subFname)
             shutil.move(source, target)
             print('Moved', subFname, 'to', target)
+        
+        # Fix possible dangling symlinks
+        self.fixSymlink(fname, target)
+    
+    def movieEpisodeDir(self, dname, possibleShowName):
+        source = os.path.join(self.SortConfig.TvDir, dname)
+        target = os.path.join(self.SortConfig.TvDir, possibleShowName)
+        shutil.move(source, target)
+        cprint('Moved ' + dname + ' to ' + target, 'red')
+        
+        self.fixSymlink(dname, target)
+    
+    def processTvDir(self, dname):
+        guessedInfoDict = guessFileInfo(dname)
+        
+        if (guessedInfoDict['type'] == 'unknown'):
+            return # This is a series folder, just skip it
+        
+        if self.SortConfig.Debug:
+            print('Guessed TV ep info:', guessedInfoDict)
+        
+        availableShowDirs = os.listdir(self.SortConfig.TvDir)
+        
+        if 'series' in guessedInfoDict:
+            possibleShowName = guessedInfoDict['series']
+            
+            if possibleShowName in availableShowDirs:
+                self.movieEpisodeDir(dname, possibleShowName)
+                    
+            if 'year' in guessedInfoDict:
+                possibleShowName = possibleShowName + ' ' + str(guessedInfoDict['year'])
                 
+                self.movieEpisodeDir(dname, possibleShowName)
+            
     def processMovieDir(self, dname):
         ''' Un-archive files, make nice '''
         crtDir = self.SortConfig.MoviesDir + os.sep + dname

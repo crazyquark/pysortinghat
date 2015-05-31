@@ -30,9 +30,7 @@ class SortingEngine:
     def sortAndMoveToTarget(self):
         '''
         Analyze cluttered dir, find movies
-        '''
-        self.analyzeTvDir()        
-        
+        '''    
         if (not os.path.isdir(self.SortConfig.ClutterDir)):
             cprint('Folder ' + self.SortConfig.ClutterDir + ' does not exit! Aborting.', 'red')
             sys.exit(1)
@@ -60,11 +58,16 @@ class SortingEngine:
         # Get dir name only
         dname = os.path.basename(dirpath)
         
+        # TODO Detect apps/software somehow
+        if 'cracked' in dname or 'Cracked' in dname:
+            return
+        
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
         guessedInfoDict = guessFileInfo(dname, info=['filename'])
         if match or guessedInfoDict.get('type') == 'episode':
             cprint('Found TV content: ' + dname, 'red')
+            self.moveFolder(dname, False) # The cleaner will take care of arranging episodes
         else:
             # Could it be a movie?
             filesInFolder = os.listdir(dirpath)
@@ -83,12 +86,27 @@ class SortingEngine:
             if foundMovie:
                 self.moveFolder(dname, True)
                     
+
+    def processSubs(self, fname, source, targetDir):
+        for subExt in self.SortConfig.SubsExtensions:
+            subFname = os.path.splitext(fname)[0] + subExt
+            # Move subtitle to the Movies folder
+            source = os.path.join(self.SortConfig.ClutterDir, subFname)
+            if os.path.exists(source):
+                shutil.move(source, targetDir)
+                cprint('Moved ' + subFname + ' to ' + targetDir, 'yellow')
+
     def processFile(self, fname):
         # Not yet
         match = self.SortConfig.TvEpsRegex.match(fname)
         guessedInfoDict = guessFileInfo(fname, info=['filename'])
         if match or guessedInfoDict.get('type') == 'episode':
             cprint ('Found TV episode: ' + fname, 'green')
+            source = os.path.join(self.SortConfig.ClutterDir, fname)
+            shutil.move(source, self.SortConfig.TvDir)
+            cprint ('Moved ' + fname + ' to ' + self.SortConfig.TvDir, 'red')
+            
+            self.processSubs(fname, source, self.SortConfig.TvDir)
         else:
             for ext in self.SortConfig.MovieExtensions:
                 if fname.endswith(ext):
@@ -98,14 +116,7 @@ class SortingEngine:
                     shutil.move(source, self.SortConfig.MoviesDir)
                     cprint ('Moved ' + fname + ' to ' + self.SortConfig.MoviesDir, 'red')
                     
-                    for subExt in self.SortConfig.SubsExtensions:
-                        subFname = os.path.splitext(fname)[0] + subExt
-                        
-                        # Move subtitle to the Movies folder
-                        if os.path.exists(subFname):
-                            source = os.path.join(self.SortConfig.ClutterDir, subFname)
-                            shutil.move(source, self.SortConfig.MoviesDir)
-                            cprint ('Moved ' + subFname + ' to ' + self.SortConfig.MoviesDir, 'yellow')
+                    self.processSubs(fname, source, self.SortConfig.MoviesDir)
                     
                     if self.SortConfig.Symlinks:
                         target = os.path.join(self.SortConfig.MoviesDir, fname)
@@ -128,7 +139,7 @@ class SortingEngine:
         
         # Don't automatically delete folders, pls!
         if (os.path.exists(target)):
-            cprint('Warning: target movie folder ' + dname + ' exists, skipping!', 'red')
+            cprint('Warning: target folder ' + dname + ' exists, skipping!', 'red')
             return
         
         shutil.move(source, target)
@@ -138,9 +149,4 @@ class SortingEngine:
         if self.SortConfig.Symlinks:
             os.symlink(target, source)
             cprint('Symlinked ' + target + ' to ' + source, 'green')
-            
-    def analyzeTvDir(self):
-        '''
-        Loads the list of already existing shows
-        '''
         

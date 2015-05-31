@@ -26,6 +26,8 @@ class Config:
                 self.TvDir = configReader[configSection]['tv']
             if 'symlinks' in options:
                 self.Symlinks = bool(configReader[configSection]['symlinks'])
+                
+        self.Version = '0.1.0'
             
     def __init__(self, **kwargs):
         # Defaults:
@@ -36,7 +38,7 @@ class Config:
         self.TvEpsPattern = '(.+\\.(S|s)?[0-9][0-9]((E|e)?[0-9][0-9])?\.?.*)|(.+-pilot\\..*)'
         self.TvEpsRegex = re.compile(self.TvEpsPattern)
         
-        self.SubsExtensions = ['.srt', '.idx', '.sub']
+        self.SubsExtensions = ['.srt', '.idx', '.sub', '.en.srt', '.en.sub', '.en.idx', '.ro.srt', '.ro.sub', '.ro.idx']
         
         #TODO: Known movies patterns
         #self.MoviePattern = ''

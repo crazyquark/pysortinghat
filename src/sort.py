@@ -30,6 +30,8 @@ def main():
         cprint('No params were passed, will use settings from config/sorter.ini', 'yellow')
         configs = sorter.config.Config()
     
+    cprint('SortingHat Version ' + configs.Version, 'green')
+    
     # Before fucking things up, attempt to stop transmission-daemon(will restart it after all is done)
     isRoot = (os.geteuid() == 0)
     retcode = subprocess.call(['service', 'transmission-daemon', 'stop'] if isRoot else ['sudo', 'service', 'transmission-daemon', 'stop'])
@@ -50,7 +52,7 @@ def main():
         # Phase 3: clean up TV episodes dir
         cleaner.cleanTvDir()
     except Exception as e:
-        cprint('There was an error: ' + e.message, 'yellow')
+        cprint('There was an error: ' + str(e), 'yellow')
         retcode = 1
     finally:
         # Restart transmission if we stopped it

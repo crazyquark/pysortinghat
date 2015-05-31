@@ -36,6 +36,8 @@ class Config:
         self.TvEpsPattern = '(.+\\.(S|s)?[0-9][0-9]((E|e)?[0-9][0-9])?\.?.*)|(.+-pilot\\..*)'
         self.TvEpsRegex = re.compile(self.TvEpsPattern)
         
+        self.SubsExtensions = ['.srt', '.idx', '.sub']
+        
         #TODO: Known movies patterns
         #self.MoviePattern = ''
         

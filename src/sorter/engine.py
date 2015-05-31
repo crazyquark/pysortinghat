@@ -31,6 +31,8 @@ class SortingEngine:
         '''
         Analyze cluttered dir, find movies
         '''
+        self.analyzeTvDir()        
+        
         if (not os.path.isdir(self.SortConfig.ClutterDir)):
             cprint('Folder ' + self.SortConfig.ClutterDir + ' does not exit! Aborting.', 'red')
             sys.exit(1)
@@ -39,6 +41,10 @@ class SortingEngine:
         for fname in filelist:
             filepath = os.path.join(self.SortConfig.ClutterDir, fname)
             
+            if fname in self.SortConfig.SkipList:
+                continue # Skip .AppleDouble and the like
+            if (os.path.islink(filepath)):
+                continue # Leave existing symlinks alone!
             if (os.path.isfile(filepath)):
                 self.processFile(filepath)
             elif (os.path.isdir(filepath)):
@@ -54,10 +60,6 @@ class SortingEngine:
         # Get dir name only
         dname = os.path.basename(dirpath)
         
-        # Damn .AppleDouble
-        if dname in self.SortConfig.SkipList:
-            return
-        
         # Match against tv episodes regex
         match = self.SortConfig.TvEpsRegex.match(dname)
         guessedInfoDict = guessFileInfo(dname, info=['filename'])
@@ -70,9 +72,6 @@ class SortingEngine:
             for fname in filesInFolder:
                 if foundMovie:
                     break
-                
-                if fname in self.SortConfig.SkipList:
-                    continue
                 
                 for ext in self.SortConfig.MovieExtensions:
                     if fname.endswith(ext):
@@ -98,6 +97,15 @@ class SortingEngine:
                     source = os.path.join(self.SortConfig.ClutterDir, fname)
                     shutil.move(source, self.SortConfig.MoviesDir)
                     cprint ('Moved ' + fname + ' to ' + self.SortConfig.MoviesDir, 'red')
+                    
+                    for subExt in self.SortConfig.SubsExtensions:
+                        subFname = os.path.splitext(fname)[0] + subExt
+                        
+                        # Move subtitle to the Movies folder
+                        if os.path.exists(subFname):
+                            source = os.path.join(self.SortConfig.ClutterDir, subFname)
+                            shutil.move(source, self.SortConfig.MoviesDir)
+                            cprint ('Moved ' + subFname + ' to ' + self.SortConfig.MoviesDir, 'yellow')
                     
                     if self.SortConfig.Symlinks:
                         target = os.path.join(self.SortConfig.MoviesDir, fname)
@@ -128,3 +136,9 @@ class SortingEngine:
         if self.SortConfig.Symlinks:
             os.symlink(target, source)
             cprint('Symlinked ' + target + ' to ' + source, 'green')
+            
+    def analyzeTvDir(self):
+        '''
+        Loads the list of already existing shows
+        '''
+        

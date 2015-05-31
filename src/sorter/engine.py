@@ -87,7 +87,8 @@ class SortingEngine:
     def processFile(self, fname):
         # Not yet
         match = self.SortConfig.TvEpsRegex.match(fname)
-        if match:
+        guessedInfoDict = guessFileInfo(fname, info=['filename'])
+        if match or guessedInfoDict.get('type') == 'episode':
             cprint ('Found TV episode: ' + fname, 'green')
         else:
             for ext in self.SortConfig.MovieExtensions:

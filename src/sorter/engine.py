@@ -96,8 +96,9 @@ class SortingEngine:
                 shutil.move(source, targetDir)
                 cprint('Moved ' + subFname + ' to ' + targetDir, 'yellow')
 
-    def processFile(self, fname):
-        # Not yet
+    def processFile(self, filepath):
+        fname = os.path.basename(filepath)
+        
         match = self.SortConfig.TvEpsRegex.match(fname)
         guessedInfoDict = guessFileInfo(fname, info=['filename'])
         if match or guessedInfoDict.get('type') == 'episode':
@@ -107,6 +108,11 @@ class SortingEngine:
             cprint ('Moved ' + fname + ' to ' + self.SortConfig.TvDir, 'red')
             
             self.processSubs(fname, source, self.SortConfig.TvDir)
+            
+            if self.SortConfig.Symlinks:
+                target = os.path.join(self.SortConfig.TvDir, fname)
+                os.symlink(target, source)
+                cprint('Symlinked ' + target + ' to ' + source, 'red')
         else:
             for ext in self.SortConfig.MovieExtensions:
                 if fname.endswith(ext):

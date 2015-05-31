@@ -60,12 +60,20 @@ class Cleaner:
             possibleShowName = guessedInfoDict['series'].title() # Make first letter caps, like in "Supernatural"
         
             if possibleShowName in availableShowDirs:
-                self.moveEpisodeFile(possibleShowName, fname)
+                self.moveEpisodeFile(fname, possibleShowName)
+                return
             elif 'year' in guessedInfoDict:
                 possibleShowName = possibleShowName + ' ' + str(guessedInfoDict['year'])
                 if possibleShowName in availableShowDirs:
-                    self.moveEpisodeFile(possibleShowName, fname)
-    
+                    self.moveEpisodeFile(fname, possibleShowName)
+                    return
+            
+            # A new show folder? Oh, joy!
+            if possibleShowName:
+                target = os.path.join(self.SortConfig.TvDir, possibleShowName)
+                os.mkdir(target)
+                self.moveEpisodeDir(fname, possibleShowName)
+                
     def processSubs(self, fname, source, targetDir):
         for subExt in self.SortConfig.SubsExtensions:
             subFname = os.path.splitext(fname)[0] + subExt
@@ -76,7 +84,7 @@ class Cleaner:
                 shutil.move(source, targetDir)
                 cprint('Moved ' + subFname + ' to ' + targetDir, 'yellow')
     
-    def moveEpisodeFile(self, showName, fname):
+    def moveEpisodeFile(self, fname, showName):
         source = os.path.join(self.SortConfig.TvDir, fname)
         target = os.path.join(self.SortConfig.TvDir, showName)
         
@@ -96,7 +104,7 @@ class Cleaner:
             if os.path.islink(symlinkFile):
                 # Oh no, we need to fix this
                 os.unlink(symlinkFile)
-                os.symlink(target, os.path.join(target, symlinkFile))
+                os.symlink(os.path.join(target, fname), symlinkFile)
                 cprint('Fixed symlink ' + symlinkFile, 'red')
     
     def processMovieFile(self, fname):
@@ -136,7 +144,7 @@ class Cleaner:
         # Fix possible dangling symlinks
         self.fixSymlink(fname, target)
     
-    def movieEpisodeDir(self, dname, possibleShowName):
+    def moveEpisodeDir(self, dname, possibleShowName):
         source = os.path.join(self.SortConfig.TvDir, dname)
         target = os.path.join(self.SortConfig.TvDir, possibleShowName)
         shutil.move(source, target)
@@ -155,17 +163,26 @@ class Cleaner:
         
         availableShowDirs = os.listdir(self.SortConfig.TvDir)
         
+        possibleShowName = None
         if 'series' in guessedInfoDict:
             possibleShowName = guessedInfoDict['series']
             
             if possibleShowName in availableShowDirs:
-                self.movieEpisodeDir(dname, possibleShowName)
+                self.moveEpisodeDir(dname, possibleShowName)
+                return
                     
             if 'year' in guessedInfoDict:
                 possibleShowName = possibleShowName + ' ' + str(guessedInfoDict['year'])
                 
-                self.movieEpisodeDir(dname, possibleShowName)
-            
+                self.moveEpisodeDir(dname, possibleShowName)
+                return
+        
+            # A new show folder? Oh, joy!
+            if possibleShowName:
+                target = os.path.join(self.SortConfig.TvDir, possibleShowName)
+                os.mkdir(target)
+                self.moveEpisodeDir(dname, possibleShowName)
+             
     def processMovieDir(self, dname):
         ''' 
         Un-archive files, make nice 

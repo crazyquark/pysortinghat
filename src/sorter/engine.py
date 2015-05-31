@@ -125,10 +125,12 @@ class SortingEngine:
         
         # Move file to directory
         source = os.path.join(self.SortConfig.ClutterDir, dname)
-        # This is needed in case some previous failed attempt created this folder
+        
+        # Don't automatically delete folders, pls!
         if (os.path.exists(target)):
-            cprint('Warning: target dir exists, deleting!', 'yellow')
-            shutil.rmtree(target)
+            cprint('Warning: target movie folder ' + dname + ' exists, skipping!', 'red')
+            return
+        
         shutil.move(source, target)
         print('Moved ',dname, 'to ', target)
         

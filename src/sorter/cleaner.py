@@ -13,6 +13,7 @@ import rarfile
 
 from termcolor import cprint
 from guessit import guess_file_info as guessFileInfo
+from sorter.engine import SortingEngine
 
 class Cleaner:
     ''' Cleaner un-archives movies, moves subs around, makes it all nice '''
@@ -104,7 +105,8 @@ class Cleaner:
             if os.path.islink(symlinkFile):
                 # Oh no, we need to fix this
                 os.unlink(symlinkFile)
-                os.symlink(os.path.join(target, fname), symlinkFile)
+                target = os.path.join(target, fname)
+                SortingEngine.symlink(symlinkFile, target)
                 cprint('Fixed symlink ' + symlinkFile, 'red')
     
     def processMovieFile(self, fname):

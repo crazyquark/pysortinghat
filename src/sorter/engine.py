@@ -111,8 +111,7 @@ class SortingEngine:
             
             if self.SortConfig.Symlinks:
                 target = os.path.join(self.SortConfig.TvDir, fname)
-                os.symlink(target, source)
-                cprint('Symlinked ' + target + ' to ' + source, 'red')
+                SortingEngine.symlink(source, target)
         else:
             for ext in self.SortConfig.MovieExtensions:
                 if fname.endswith(ext):
@@ -126,8 +125,7 @@ class SortingEngine:
                     
                     if self.SortConfig.Symlinks:
                         target = os.path.join(self.SortConfig.MoviesDir, fname)
-                        os.symlink(target, source)
-                        cprint('Symlinked ' + target + ' to ' + source, 'red')
+                        SortingEngine.symlink(source, target)
                     break
                 
     def moveFolder(self, dname, isMovie):
@@ -153,6 +151,11 @@ class SortingEngine:
         
         # OK, we are attempting to symlink the file back so that transmission can keep seeding
         if self.SortConfig.Symlinks:
-            os.symlink(target, source)
-            cprint('Symlinked ' + target + ' to ' + source, 'green')
+            SortingEngine.symlink(source, target)
         
+    @staticmethod    
+    def symlink(linkpath, filepath):
+        rel_path_to_file = os.path.relpath(filepath, os.path.dirname(linkpath))
+        os.symlink(rel_path_to_file, linkpath)
+        cprint('Symlinked ' + filepath + ' to ' + rel_path_to_file, 'red')
+
